@@ -17,6 +17,14 @@ LINE = (
 
 
 def main() -> None:
+    # Self-check against the bounty gate before writing anything:
+    # the entry must be UTF-8 text of 1 to 200 characters, not only
+    # whitespace. Fail loudly instead of submitting a bad line.
+    if not (1 <= len(LINE) <= 200):
+        raise SystemExit(f"line is {len(LINE)} characters, gate needs 1-200")
+    if not LINE.strip():
+        raise SystemExit("line is only whitespace, gate needs real text")
+    LINE.encode("utf-8")
     out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "out"))
     out_dir.mkdir(parents=True, exist_ok=True)
     target = out_dir / "entry.txt"
